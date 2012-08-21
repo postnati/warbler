@@ -102,7 +102,11 @@ module Warbler
 
     # Add java libraries to WEB-INF/lib.
     def find_java_libs(config)
-      config.java_libs.map {|lib| add_with_pathmaps(config, lib, :java_libs) }
+      config.java_libs.map do |lib|
+        unless(lib =~ /jruby-(core|stdlib)-\d\.\d\.\d\.\d\.jar/)
+          add_with_pathmaps(config, lib, :java_libs)
+        end
+      end
     end
 
     # Add java classes to WEB-INF/classes.
